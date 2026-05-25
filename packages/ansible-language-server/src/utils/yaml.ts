@@ -50,7 +50,7 @@ export class AncestryBuilder<N extends Node | Pair = Node> {
   ): AncestryBuilder<X> {
     this._index--;
     if (isPair(this.get())) {
-      if (!type || !(type === Pair.prototype.constructor)) {
+      if (!type || type !== Pair.prototype.constructor) {
         this._index--;
       }
     }

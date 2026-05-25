@@ -301,7 +301,7 @@ const matchLine = (
   indentIndex: number,
   validSuggestionTriggerIndents: number[],
 ) => {
-  const matched = documentLines[indentIndex].match(/^\s*-\s*/);
+  const matched = /^\s*-\s*/.exec(documentLines[indentIndex]);
   if (matched) {
     const indentLength = Math.max(matched[0].length - 2, 0);
     if (validSuggestionTriggerIndents[indentIndex] === -1) {
@@ -320,12 +320,12 @@ function shouldTriggerMultiTaskSuggestionForTaskFile(
   let firstMatchKeywordIndent = -1;
   const validSuggestionTriggerIndents: number[] = [];
   let matchKeywordIndex = -1;
-  for (let lineIndex = 0; lineIndex < documentLines.length; lineIndex++) {
+  for (const _ of documentLines) {
     validSuggestionTriggerIndents.push(-1);
   }
   for (let lineIndex = documentLines.length - 1; lineIndex >= 0; lineIndex--) {
     if (matchKeyword(tasksFileKeywords, documentLines[lineIndex])) {
-      const match = documentLines[lineIndex].match(/^\s*/);
+      const match = /^\s*/.exec(documentLines[lineIndex]);
       if (firstMatchKeywordIndent === -1) {
         firstMatchKeywordIndent = match ? match[0].length : -1;
       }

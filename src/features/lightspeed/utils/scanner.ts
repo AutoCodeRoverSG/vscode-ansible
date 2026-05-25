@@ -102,8 +102,8 @@ export class CollectionFinder {
         return [];
       });
     const r: AnsibleCollection[] = [];
-    for (let i = 0; i < a.length; i++) {
-      (await Promise.all(await a[i])).forEach((entry) => {
+    for (const item of a) {
+      (await Promise.all(await item)).forEach((entry) => {
         if (entry instanceof AnsibleCollection) {
           r.push(entry);
         }

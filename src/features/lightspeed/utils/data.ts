@@ -430,7 +430,7 @@ function shouldTriggerMultiTaskSuggestionForPlaybook(
   let matchKeywordIndex = -1;
   for (let lineIndex = documentLines.length - 1; lineIndex >= 0; lineIndex--) {
     if (matchKeyword(tasksInPlaybookKeywords, documentLines[lineIndex])) {
-      const match = documentLines[lineIndex].match(/^\s*/);
+      const match = /^\s*/.exec(documentLines[lineIndex]);
       if (firstMatchKeywordIndent === -1) {
         firstMatchKeywordIndent = match ? match[0].length : -1;
       }
@@ -463,7 +463,7 @@ function shouldTriggerMultiTaskSuggestionForPlaybook(
           indentIndex < documentLines.length;
           indentIndex++
         ) {
-          const matched = documentLines[indentIndex].match(/^\s*-\s*/);
+          const matched = /^\s*-\s*/.exec(documentLines[indentIndex]);
           if (matched) {
             const indentLength = Math.max(matched[0].length - 2, 0);
             if (!validSuggestionTriggerIndents.includes(indentLength)) {

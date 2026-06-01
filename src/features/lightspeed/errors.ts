@@ -288,9 +288,9 @@ ERRORS.addError(
         "cloudfront";
       if (typeof body === "string") {
         bodyContainsCloudFront =
-          (body.toLowerCase().match("cloudfront")?.length || 0) > 0;
+          (/cloudfront/.exec(body.toLowerCase())?.length || 0) > 0;
         bodyContainsCloudFrontBlocked =
-          (body.toLowerCase().match("blocked")?.length || 0) > 0;
+          (/blocked/.exec(body.toLowerCase())?.length || 0) > 0;
       }
       return (
         bodyContainsCloudFront &&

@@ -10,8 +10,8 @@ import { LIGHTSPEED_ME_AUTH_URL } from "../src/definitions/lightspeed";
 import { getInlineSuggestionItems } from "../src/features/lightspeed/inlineSuggestions";
 import { rmSync } from "fs";
 
-export let doc: vscode.TextDocument;
-export let editor: vscode.TextEditor;
+let doc: vscode.TextDocument;
+let editor: vscode.TextEditor;
 
 export const FIXTURES_BASE_PATH = path.join("test", "testFixtures");
 export const ANSIBLE_COLLECTIONS_FIXTURES_BASE_PATH = path.resolve(

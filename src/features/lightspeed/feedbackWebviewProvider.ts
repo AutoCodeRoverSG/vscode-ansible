@@ -86,7 +86,7 @@ export class LightspeedFeedbackWebviewProvider {
     return getWebviewContent(webview, extensionUri);
   }
 
-  private async _setWebviewMessageListener(webview: Webview) {
-    await setWebviewMessageListener(webview, this._disposables);
+  private _setWebviewMessageListener(webview: Webview) {
+    setWebviewMessageListener(webview, this._disposables);
   }
 }

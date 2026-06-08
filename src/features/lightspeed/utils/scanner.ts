@@ -69,6 +69,22 @@ export class CollectionFinder {
     return j;
   }
 
+  private async readCollectionsFromNamespace(
+    namespaceDirectory: string,
+  ): Promise<(AnsibleCollection | null)[]> {
+    const collectionDirectories = await readdir(namespaceDirectory, {
+      withFileTypes: true,
+    });
+    const collectionPromises = collectionDirectories
+      .filter((entry) => entry.isDirectory())
+      .map((entry) =>
+        this.readCollectionMetaInformation(
+          path.join(entry.parentPath, entry.name),
+        ),
+      );
+    return Promise.all(collectionPromises);
+  }
+
   async searchNestedCollections() {
     const collectionsPath = path.join(
       this.workspacePaths[0],
@@ -79,22 +95,11 @@ export class CollectionFinder {
         return namespaceDirectories
           .filter((namespaceEntry) => namespaceEntry.isDirectory())
           .map((namespaceEntry) => {
-            const namespaceName = namespaceEntry.name;
             const namespaceDirectory = path.join(
               namespaceEntry.parentPath,
-              namespaceName,
+              namespaceEntry.name,
             );
-            return readdir(namespaceDirectory, { withFileTypes: true }).then(
-              (collectionDirectories: Dirent[]) => {
-                return collectionDirectories
-                  .filter((entry) => entry.isDirectory())
-                  .map((entry) =>
-                    this.readCollectionMetaInformation(
-                      path.join(entry.parentPath, entry.name),
-                    ),
-                  );
-              },
-            );
+            return this.readCollectionsFromNamespace(namespaceDirectory);
           });
       })
       .catch((e) => {
@@ -102,12 +107,13 @@ export class CollectionFinder {
         return [];
       });
     const r: AnsibleCollection[] = [];
-    for (let i = 0; i < a.length; i++) {
-      (await Promise.all(await a[i])).forEach((entry) => {
+    for (const namespacePromise of a) {
+      const entries = await namespacePromise;
+      for (const entry of entries) {
         if (entry instanceof AnsibleCollection) {
           r.push(entry);
         }
-      });
+      }
     }
     return r;
   }

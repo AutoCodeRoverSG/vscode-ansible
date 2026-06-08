@@ -89,6 +89,7 @@ export class LightSpeedManager {
       context,
       settingsManager,
     );
+    this.statusBarProvider.updateLightSpeedStatusbar();
 
     this.lightspeedExplorerProvider = new LightspeedExplorerWebviewViewProvider(
       context.extensionUri,

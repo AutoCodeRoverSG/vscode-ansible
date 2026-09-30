@@ -243,7 +243,7 @@ export const COMMON_DEPENDENCIES = {
     versionCommand: "ansible-creator --version",
     versionParser: (output: string) => {
       // Extract version from "ansible-creator 0.1.0" or similar
-      const match = output.match(/ansible-creator.*?(\d+\.\d+\.\d+)/);
+      const match = /ansible-creator.*?(\d+\.\d+\.\d+)/.exec(output);
       return match ? match[1] : null;
     },
   },
